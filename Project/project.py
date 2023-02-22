@@ -14,6 +14,40 @@ from urllib.request import urlopen,Request
 import matplotlib.pyplot as plt
 import platform
 
+# In[1]:
+# 3일간 최대 많이 나온 검색어 상위 20
+def search_top(cnt):
+    import operator
+    string_list=list(cnt.keys()) # 읽어온 카운터의 키값(상품명)을 리스트로 저장
+    int_list=list(cnt.values()) # 읽어온 카운터의 value값(빈도수)를 리스트로 저장
+
+    dic = { x:y for x,y in zip(string_list,int_list) } # 두 개의 리스트를 딕셔너리화 (중복제거 x)
+    sorted_by_value = sorted(dic.items(), key=operator.itemgetter(1), reverse=True) # value(빈도수)값으로 내림차순 정렬
+    for i in range(0,20,2):
+        print("%10s \t %10s\n"%(sorted_by_value[i][0],sorted_by_value[i+1][0]))
+
+
+# In[2]:
+# 저장된 파일을 바탕으로 막대그래프
+def show_bar(counter):
+    if platform.system() == 'Darwin': #맥
+        plt.rc('font', family='AppleGothic') 
+    elif platform.system() == 'Windows': #윈도우
+        plt.rc('font', family='Malgun Gothic') 
+    elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
+
+        plt.rc('font', family='Malgun Gothic') 
+    plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
+    
+    labels=list(counter.keys())
+    values=list(counter.values())
+    plt.figure(figsize=(20,10))
+    plt.title("3일간의 검색 빈도수")
+    plt.xlabel("검색어")
+    plt.ylabel("빈도수")
+    # for i in range(20):
+    #     plt.bar(labels[i],values[i])
+    plt.bar(labels[:20],values[:20])
 
 def file_to_counter():  
     f=open('save2_data.txt','r',encoding='utf-8') # 축적된 파일 열기
@@ -58,43 +92,12 @@ def get_ranklist():
     return li2
 
 
-# In[1]:
-def search_top(cnt):
-    import operator
-    string_list=list(cnt.keys()) # 읽어온 카운터의 키값(상품명)을 리스트로 저장
-    int_list=list(cnt.values()) # 읽어온 카운터의 value값(빈도수)를 리스트로 저장
 
-    dic = { x:y for x,y in zip(string_list,int_list) } # 두 개의 리스트를 딕셔너리화 (중복제거 x)
-    sorted_by_value = sorted(dic.items(), key=operator.itemgetter(1), reverse=True) # value(빈도수)값으로 내림차순 정렬
-    for i in range(0,20,2):
-        print("%10s \t %10s\n"%(sorted_by_value[i][0],sorted_by_value[i+1][0]))
 
 # 저장된 파일을 바탕으로 워드클라우드
 
 
-# In[1]:
 
-
-# 저장된 파일을 바탕으로 막대그래프
-def show_bar(counter):
-    if platform.system() == 'Darwin': #맥
-        plt.rc('font', family='AppleGothic') 
-    elif platform.system() == 'Windows': #윈도우
-        plt.rc('font', family='Malgun Gothic') 
-    elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
-
-        plt.rc('font', family='Malgun Gothic') 
-    plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
-    
-    labels=list(counter.keys())
-    values=list(counter.values())
-    plt.figure(figsize=(20,10))
-    plt.title("3일간의 검색 빈도수")
-    plt.xlabel("검색어")
-    plt.ylabel("빈도수")
-    # for i in range(20):
-    #     plt.bar(labels[i],values[i])
-    plt.bar(labels[:20],values[:20])
 # In[5]:
 
 
