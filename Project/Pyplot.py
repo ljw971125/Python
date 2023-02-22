@@ -55,5 +55,5 @@ def brand_circle():
       
         plt.pie(high_value, labels=high_label, explode=explode_value, autopct='%.2f')
         plt.show
-brand_circle()
+
 # %%
