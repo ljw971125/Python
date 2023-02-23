@@ -105,8 +105,8 @@ def show_bar(counter):
 
 # 2 키워드별 판매순으로 브랜드 카운팅
 # 상품 검색후 브랜드 카운팅
-def search_brand(item):    
-    #input_product = input('상품명을 입력해주세요.') # 상품명 입력
+def search_brand():    
+    input_product = input('상품명을 입력해주세요.') # 상품명 입력
     
     driver=webdriver.Chrome("C:\chromedriver\chromedriver.exe") #크롬드라이버
     driver.get("https://www.musinsa.com/app/") 
@@ -114,7 +114,7 @@ def search_brand(item):
     # 크롬 드라이버 동작 부분
     driver.find_element(By.XPATH,'//*[@id="search_query"]').click()
     sleep(0.1)
-    driver.find_element(By.XPATH,'//*[@id="search_query"]').send_keys(item)
+    driver.find_element(By.XPATH,'//*[@id="search_query"]').send_keys(input_product)
     sleep(0.1)
     driver.find_element(By.XPATH,'//*[@id="search_button"]').click()
     sleep(0.1)
