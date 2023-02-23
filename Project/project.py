@@ -17,7 +17,7 @@ import numpy as np #NumPy(Numerical Python)는 파이썬의 고성능 수치계�
 from PIL import Image #이미지를 분석하고 처리하는 라이브러리
 import operator #파이썬에서 수행 가능한 연산을 효율적으로 처리할 수 있는 모듈
 import os #Operating System #운영체제에서 제공되는 여러 기능을 파이썬에서 수행할 수 있게 해주는 모듈
-import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 import
+import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 모듈
 
 def hangul(): # 한글 깨짐 해결
     if platform.system() == 'Darwin': #맥
