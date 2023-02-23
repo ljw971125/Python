@@ -17,8 +17,38 @@ from wordcloud import WordCloud
 import numpy as np
 from PIL import Image
 import operator
+import os
 
-
+def createFolder(): # 폴더 생성
+    import os 
+    try:
+        if not os.path.exists('imsiTemp'): # 폴더이름:imsiTemp의 존재여부 : x
+            os.makedirs('imsiTemp')  # 'imsiTemp'디렉토리 생성
+    except OSError: # os에러
+        print ('Error: Creating directory. ' +  'imsiTemp')
+    
+def save_img(num):     # 이미지 저장   
+    from PIL import Image
+    if(num==1):
+        image = Image.open("imsiTemp\\막대.jpg") # imsiTemp폴더 안의 이미지를 열어서 image변수에 저장
+        image.save("막대.jpg",'JPEG') # image변수를 현재경로의 매개변수 값으로 저장
+    elif(num==2):
+        image = Image.open("imsiTemp\\워드클라우드1.jpg")# imsiTemp폴더 안의 이미지를 열어서 image변수에 저장
+        image.save("워드클라우드1.jpg",'JPEG') # image변수를 현재경로의 매개변수 값으로 저장
+    elif(num==3):
+        image = Image.open("imsiTemp\\원그래프.jpg")# imsiTemp폴더 안의 이미지를 열어서 image변수에 저장
+        image.save("원그래프.jpg",'JPEG') # image변수를 현재경로의 매개변수 값으로 저장
+    else :
+        image = Image.open("imsiTemp\\워드클라우드2.jpg")# imsiTemp폴더 안의 이미지를 열어서 image변수에 저장
+        image.save("워드클라우드2.jpg",'JPEG') # image변수를 현재경로의 매개변수 값으로 저장
+def deleteFolder(): # 폴더삭제
+    import os
+    import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 import
+    try:
+        if os.path.exists('imsiTemp'): # 'imsiTemp' 디렉토리가 존재하면
+            shutil.rmtree('imsiTemp') # 전체삭제(파일,폴더 전부다)
+    except OSError:
+        print ('Error: Creating directory. ' +  'imsiTemp')
 
 def file_to_counter():  
     f=open('save2_data.txt','r',encoding='utf-8') # 축적된 파일 열기
@@ -81,26 +111,34 @@ def search_top(cnt):
 
 # 저장된 파일을 바탕으로 막대그래프
 def show_bar(counter):
+    import os
+    from PIL import Image
+    from PIL import Image
+    import matplotlib.pyplot as plt
+    import platform
     if platform.system() == 'Darwin': #맥
         plt.rc('font', family='AppleGothic') 
     elif platform.system() == 'Windows': #윈도우
         plt.rc('font', family='Malgun Gothic') 
     elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
-
         plt.rc('font', family='Malgun Gothic') 
     plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
     
-    labels=list(counter.keys())
-    values=list(counter.values())
-    plt.figure(figsize=(20,10))
-    plt.title("3일간의 검색 빈도수")
-    plt.xlabel("검색어")
-    plt.ylabel("빈도수")
-    # for i in range(20):
-    #     plt.bar(labels[i],values[i])
-    plt.bar(labels[:20],values[:20])
-    plt.show()
-# In[5]:
+    if(os.path.isfile("imsiTemp\\막대.jpg")):
+        image = Image.open("imsiTemp\\막대.jpg")
+        image.show()
+    else:
+        labels=list(counter.keys())
+        values=list(counter.values())
+        fig=plt.figure(figsize=(20,10))
+        plt.title("3일간의 검색 빈도수")
+        plt.xlabel("검색어")
+        plt.ylabel("빈도수")
+        plt.bar(labels[:20],values[:20],color=['r','g','b','purple','y'])
+        plt.savefig('막대.jpg')
+        plt.close(fig)
+        image = Image.open("imsiTemp\\막대.jpg")
+        image.show()
 
 
 # 2 키워드별 판매순으로 브랜드 카운팅
@@ -161,6 +199,10 @@ def search_brand():
 
 # 브랜드 파일 원그래프
 def brand_circle():
+    import os
+    from PIL import Image
+    import matplotlib.pyplot as plt
+    import platform
     if platform.system() == 'Darwin': #맥
             plt.rc('font', family='AppleGothic') 
     elif platform.system() == 'Windows': #윈도우
@@ -169,68 +211,119 @@ def brand_circle():
         plt.rc('font', family='Malgun Gothic') 
         plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
 
-    counter = search_brand()
+    if(os.path.isfile("imsiTemp\\원그래프.jpg")):
+        image = Image.open("imsiTemp\\원그래프.jpg")
+        image.show()
+    else:        
+        counter = search_brand()
 
-    labels=list(counter.keys())
-    values=list(counter.values())
+        labels=list(counter.keys())
+        values=list(counter.values())
 
-    high_value = []
-    high_label=[]
+        high_value = []
+        high_label=[]
         
-    for i in range(len(labels)):
-        if(values[i] >= 20):
-            high_value.append(values[i])
-            high_label.append(labels[i])
+        for i in range(len(labels)):
+            if(values[i] >= 20):
+                high_value.append(values[i])
+                high_label.append(labels[i])
         
-    explode_max = 0
-    explode_value = []
+        explode_max = 0
+        explode_value = []
 
-    for i in range(len(high_value)):
-        if high_value[i] > explode_max:
-            explode_max = high_value[i]
+        for i in range(len(high_value)):
+            if high_value[i] > explode_max:
+                explode_max = high_value[i]
         
-    for i in range(len(high_value)):
-        if high_value[i] == explode_max:
-            explode_value.append(0.1)
-        else:
-            explode_value.append(0)
+        for i in range(len(high_value)):
+            if high_value[i] == explode_max:
+                explode_value.append(0.1)
+            else:
+                explode_value.append(0)
         
       
-    plt.pie(high_value, labels=high_label, explode=explode_value, autopct='%.2f')
-    plt.show
+        fig=plt.pie(high_value, labels=high_label, explode=explode_value, autopct='%.2f')
+        plt.savefig('imsiTemp\\원그래프.jpg')
+        plt.close(fig)
+        image = Image.open("imsiTemp\\원그래프.jpg")
+        image.show()
+    
     # 워드클라우드 공통 함수화
-def mk_wordcloud(func):
+def mk_wordcloud(func,num):
+    if(num==1):
+        if(os.path.isfile('imsiTemp\\워드클라우드1.jpg')):
+            image=Image.open('imsiTemp\\워드클라우드1.jpg')
+            image.show()
+        else:
+            labels=list(func.keys())
+            values=list(func.values())
+            high_value2 = [] 
+            high_label2 = []
 
+            for i in range(len(labels)):
+                if(values[i] >= 5):
+                    high_value2.append(values[i])
+                    high_label2.append(labels[i])
 
-    labels=list(func.keys())
-    values=list(func.values())
-    high_value2 = [] 
-    high_label2 = []
+            high_dic = dict(zip(high_label2,high_value2))
 
-    for i in range(len(labels)):
-        if(values[i] >= 5):
-            high_value2.append(values[i])
-            high_label2.append(labels[i])
+            t_mask = np.array(Image.open('t5_2.jpg'))
 
-    high_dic = dict(zip(high_label2,high_value2))
+            fontpath='C:\\Windows\\Fonts\\NGULIM.TTF'
 
-    t_mask = np.array(Image.open('t5_2.jpg'))
+            wc = WordCloud(
+                background_color='white',
+                relative_scaling=0.2, 
+                mask=t_mask, stopwords=['counter'], 
+                colormap ="Greens",
+                font_path = fontpath
+            ).generate(str(high_dic))
 
-    fontpath='C:\\Windows\\Fonts\\NGULIM.TTF'
+            fig=plt.figure(figsize=(3,3))
+            plt.imshow(wc, interpolation='bilinear')
+            plt.axis('off')
+            plt.savefig('imsiTemp\\워드클라우드1.jpg')
+            plt.close()
+            image=Image.open('imsiTemp\\워드클라우드1.jpg')
+            image.show()
+    elif(num==2):
+        if(os.path.isfile('imsiTemp\\워드클라우드2.jpg')):
+            image=Image.open('imsiTemp\\워드클라우드2.jpg')
+            image.show()
+        else:
+            labels=list(func.keys())
+            values=list(func.values())
+            high_value2 = [] 
+            high_label2 = []
 
-    wc = WordCloud(
-        background_color='white',
-        relative_scaling=0.2, 
-        mask=t_mask, stopwords=['counter'], 
-        colormap ="Greens",
-        font_path = fontpath
-    ).generate(str(high_dic))
+            for i in range(len(labels)):
+                if(values[i] >= 5):
+                    high_value2.append(values[i])
+                    high_label2.append(labels[i])
 
-    plt.figure(figsize=(8,8))
-    plt.imshow(wc, interpolation='bilinear')
-    plt.axis('off')
-    plt.show()
+            high_dic = dict(zip(high_label2,high_value2))
 
+            t_mask = np.array(Image.open('t5_2.jpg'))
+
+            fontpath='C:\\Windows\\Fonts\\NGULIM.TTF'
+
+            wc = WordCloud(
+                background_color='white',
+                relative_scaling=0.2, 
+                mask=t_mask, stopwords=['counter'], 
+                colormap ="Greens",
+                font_path = fontpath
+            ).generate(str(high_dic))
+
+            fig=plt.figure(figsize=(3,3))
+            plt.imshow(wc, interpolation='bilinear')
+            plt.axis('off')
+            plt.savefig('imsiTemp\\워드클라우드2.jpg')
+            plt.close()
+            image=Image.open('imsiTemp\\워드클라우드2.jpg')
+            image.show()
+    else:
+        print("잘못된 인자값입니다. 1 2 중 선택해주세요.")
 # In[ ]:
 
 
