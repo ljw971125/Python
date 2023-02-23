@@ -5,7 +5,6 @@
 from collections import Counter
 import requests
 from bs4 import BeautifulSoup
-import schedule
 from selenium import webdriver
 from selenium.webdriver.common.by import By 
 from time import sleep #sleep함수
@@ -89,8 +88,6 @@ def get_ranklist():
     soup=BeautifulSoup(html_data,"html.parser")
     
     # 20등 까지의 검색어 순위 리스트 생성
-    
-    len_cnt=0
     for f_text in soup.find_all("li"):
         li.append(f_text.a['title'])
     for i in range(20):
@@ -108,13 +105,9 @@ def search_top(cnt):
     sorted_by_value = sorted(dic.items(), key=operator.itemgetter(1), reverse=True) # value(빈도수)값으로 내림차순 정렬
     for i in range(0,20,2):
         print("%10s \t %10s\n"%(sorted_by_value[i][0],sorted_by_value[i+1][0]))
-
-# 저장된 파일을 바탕으로 워드클라우드
-
+    return sorted_by_value
 
 # In[1]:
-
-
 # 저장된 파일을 바탕으로 막대그래프
 def show_bar(counter):
         
@@ -134,61 +127,50 @@ def show_bar(counter):
         image = Image.open("imsiTemp\\막대.jpg")
         image.show()
 
-
 # 2 키워드별 판매순으로 브랜드 카운팅
 # 상품 검색후 브랜드 카운팅
-def search_brand():    
-    input_product = input('상품명을 입력해주세요.') # 상품명 입력
-    
-    driver=webdriver.Chrome("C:\chromedriver\chromedriver.exe") #크롬드라이버
-    driver.get("https://www.musinsa.com/app/") 
-    
-    # 크롬 드라이버 동작 부분
-    driver.find_element(By.XPATH,'//*[@id="search_query"]').click()
-    sleep(0.1)
-    driver.find_element(By.XPATH,'//*[@id="search_query"]').send_keys(input_product)
-    sleep(0.1)
-    driver.find_element(By.XPATH,'//*[@id="search_button"]').click()
-    sleep(0.1)
-    driver.find_element(By.XPATH,'/html/body/div[2]/div[3]/section/div[3]/div/section[1]/header/a/h2').click()
-    sleep(0.1)
-    driver.find_element(By.XPATH,'//*[@id="goodsList"]/div[1]/a[7]/span').click()
-    sleep(0.1)
-    driver.find_element(By.XPATH,'//*[@id="layerSorting_sale"]/div/label[5]').click()
-    sleep(0.1)
+def search_brand():
+     # 상품명 입력
 
-    URL=driver.current_url
-    test_Url=URL.split('page')
+    while(True):
+        input_product = input('상품명을 입력해주세요.')
+        if  input_product in dict(file_to_counter()):
+            driver=webdriver.Chrome("C:\chromedriver\chromedriver.exe") #크롬드라이버
+            driver.get("https://www.musinsa.com/app/") 
 
+            # 크롬 드라이버 동작 부분
+            driver.find_element(By.XPATH,'//*[@id="search_query"]').click()
+            sleep(0.1)
+            driver.find_element(By.XPATH,'//*[@id="search_query"]').send_keys(input_product)
+            sleep(0.1)
+            driver.find_element(By.XPATH,'//*[@id="search_button"]').click()
+            sleep(0.1)
+            driver.find_element(By.XPATH,'/html/body/div[2]/div[3]/section/div[3]/div/section[1]/header/a/h2').click()
+            sleep(0.1)
+            driver.find_element(By.XPATH,'//*[@id="goodsList"]/div[1]/a[7]/span').click()
+            sleep(0.1)
+            driver.find_element(By.XPATH,'//*[@id="layerSorting_sale"]/div/label[5]').click()
+            sleep(0.1)
 
+            URL=driver.current_url
+            test_Url=URL.split('page')
 
-    brand_li=[] #브랜드 리스트
-    for i in range(1,11): # 첫페이지 부터 10페이지 까지 수집
-        url = Request(test_Url[0]+'page='+str(i)+test_Url[1][2:], headers={'User-Agent': 'Mozilla/5.0'})
-        html = urlopen(url)
-        soup = BeautifulSoup(html, 'html.parser')
-        brand_name=soup.find_all('p',class_="item_title")
-        
-        for j in range(len(brand_name)):
-            brand_li.append(brand_name[j].text)
-        
-    brand_counter = Counter(brand_li)
-    return brand_counter
+            brand_li=[] #브랜드 리스트
+            for i in range(1,11): # 첫페이지 부터 10페이지 까지 수집
+                url = Request(test_Url[0]+'page='+str(i)+test_Url[1][2:], headers={'User-Agent': 'Mozilla/5.0'})
+                html = urlopen(url)
+                soup = BeautifulSoup(html, 'html.parser')
+                brand_name=soup.find_all('p',class_="item_title")
 
+                for j in range(len(brand_name)):
+                    brand_li.append(brand_name[j].text)
 
-# In[ ]:
-
-
-# 카운팅된 브랜드, 숫자 파일로 저장 
-
-
-# In[ ]:
-
-
-# 브랜드파일 워드클라우드
-
-
-# In[6]:
+            brand_counter = Counter(brand_li)
+            return brand_counter
+            break
+        else:
+            print('데이터양이 충분한 검색어가 아닙니다.')
+            break
 
 
 # 브랜드 파일 원그래프
