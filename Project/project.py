@@ -2,21 +2,21 @@
 # coding: utf-8
 
 # In[1]:
-from collections import Counter
-import requests
-from bs4 import BeautifulSoup
-from selenium import webdriver
+from collections import Counter #자료형(list, tuple, dict)들에게 확장된 기능을 주기 위해 제작된 파이썬의 내장 모듈
+import requests #특정 웹사이트에 HTTP 요청을 보내 HTML 문서를 받아올 수 있는 라이브러리
+from bs4 import BeautifulSoup #파이썬에서 사용할 수 있는 웹데이터 크롤링 라이브러리
+from selenium import webdriver #HTML 값들을 처리함에 있어 동적으로 변하는 웹 페이지의 데이터들까지 크롤링
 from selenium.webdriver.common.by import By 
 from time import sleep #sleep함수
 from collections import Counter #카운트
-from urllib.request import urlopen,Request
-import matplotlib.pyplot as plt
-import platform
-from wordcloud import WordCloud
-import numpy as np
-from PIL import Image
-import operator
-import os
+from urllib.request import urlopen,Request #URL(Uniform Resource Locator)을 가져오기 위한 파이썬 모듈
+import matplotlib.pyplot as plt #데이터를 차트나 플롯(Plot)으로 그려주는 라이브러리 패키지
+import platform #시스템 정보를 확인할 때 사용하는 모듈
+from wordcloud import WordCloud #중요한 단어나 키워드를 시각화해서 보여주는 시각화 도구
+import numpy as np #NumPy(Numerical Python)는 파이썬의 고성능 수치계산을 위한 라이브러리
+from PIL import Image #이미지를 분석하고 처리하는 라이브러리
+import operator #파이썬에서 수행 가능한 연산을 효율적으로 처리할 수 있는 모듈
+import os #Operating System #운영체제에서 제공되는 여러 기능을 파이썬에서 수행할 수 있게 해주는 모듈
 import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 import
 
 def hangul(): # 한글 깨짐 해결
@@ -74,7 +74,7 @@ def file_to_counter():
     return cnt
        
 
-# 1 검색어 순위 데이터 20등 까지 수집하는 함수
+# 검색어 순위 데이터 20등 까지 수집하는 함수
 def get_ranklist():
     # 모듈 불러오기
     
@@ -96,7 +96,7 @@ def get_ranklist():
     return li2
 
 
-# In[1]:
+# 3일간 최대 많이 나온 검색어 상위 20
 def search_top(cnt):
     string_list=list(cnt.keys()) # 읽어온 카운터의 키값(상품명)을 리스트로 저장
     int_list=list(cnt.values()) # 읽어온 카운터의 value값(빈도수)를 리스트로 저장
@@ -107,7 +107,7 @@ def search_top(cnt):
         print("%10s \t %10s\n"%(sorted_by_value[i][0],sorted_by_value[i+1][0]))
     return sorted_by_value
 
-# In[1]:
+
 # 저장된 파일을 바탕으로 막대그래프
 def show_bar(counter):
         
@@ -127,7 +127,7 @@ def show_bar(counter):
         image = Image.open("imsiTemp\\막대.jpg")
         image.show()
 
-# 2 키워드별 판매순으로 브랜드 카운팅
+# 키워드별 판매순으로 브랜드 카운팅
 # 상품 검색후 브랜드 카운팅
 def search_brand():
      # 상품명 입력
