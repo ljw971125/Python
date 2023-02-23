@@ -279,7 +279,7 @@ def mk_wordcloud(func,num):
                 font_path = fontpath
             ).generate(str(high_dic))
 
-            fig=plt.figure(figsize=(3,3))
+            fig=plt.figure(figsize=(8,8))
             plt.imshow(wc, interpolation='bilinear')
             plt.axis('off')
             plt.savefig('imsiTemp\\워드클라우드1.jpg')
@@ -315,7 +315,7 @@ def mk_wordcloud(func,num):
                 font_path = fontpath
             ).generate(str(high_dic))
 
-            fig=plt.figure(figsize=(3,3))
+            plt.figure(figsize=(8,8))
             plt.imshow(wc, interpolation='bilinear')
             plt.axis('off')
             plt.savefig('imsiTemp\\워드클라우드2.jpg')

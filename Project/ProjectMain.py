@@ -55,6 +55,7 @@ while(True):
             raise Exception('구현 미완성')
         
         elif(in_num==0):
+            deleteFolder()
             print('프로그램을 종료합니다.')
             break
 
