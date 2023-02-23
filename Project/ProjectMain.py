@@ -18,6 +18,7 @@ while(True):
         print("0) 종료")
 
         createFolder() # 폴더 자동생성
+        hangul()
         li3=["y","yes","Y","YES","Yes","예","네"]
         li4=["n","no","N","NO","No","아니오"]
         in_num=int(input("보고싶은 메뉴의 번호를 입력하세요.\n"))

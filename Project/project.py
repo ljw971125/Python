@@ -18,9 +18,18 @@ import numpy as np
 from PIL import Image
 import operator
 import os
+import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 import
+
+def hangul(): # 한글 깨짐 해결
+    if platform.system() == 'Darwin': #맥
+        plt.rc('font', family='AppleGothic') 
+    elif platform.system() == 'Windows': #윈도우
+        plt.rc('font', family='Malgun Gothic') 
+    elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
+        plt.rc('font', family='Malgun Gothic') 
+    plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
 
 def createFolder(): # 폴더 생성
-    import os 
     try:
         if not os.path.exists('imsiTemp'): # 폴더이름:imsiTemp의 존재여부 : x
             os.makedirs('imsiTemp')  # 'imsiTemp'디렉토리 생성
@@ -28,7 +37,6 @@ def createFolder(): # 폴더 생성
         print ('Error: Creating directory. ' +  'imsiTemp')
     
 def save_img(num):     # 이미지 저장   
-    from PIL import Image
     if(num==1):
         image = Image.open("imsiTemp\\막대.jpg") # imsiTemp폴더 안의 이미지를 열어서 image변수에 저장
         image.save("막대.jpg",'JPEG') # image변수를 현재경로의 매개변수 값으로 저장
@@ -42,8 +50,6 @@ def save_img(num):     # 이미지 저장
         image = Image.open("imsiTemp\\워드클라우드2.jpg")# imsiTemp폴더 안의 이미지를 열어서 image변수에 저장
         image.save("워드클라우드2.jpg",'JPEG') # image변수를 현재경로의 매개변수 값으로 저장
 def deleteFolder(): # 폴더삭제
-    import os
-    import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 import
     try:
         if os.path.exists('imsiTemp'): # 'imsiTemp' 디렉토리가 존재하면
             shutil.rmtree('imsiTemp') # 전체삭제(파일,폴더 전부다)
@@ -111,19 +117,7 @@ def search_top(cnt):
 
 # 저장된 파일을 바탕으로 막대그래프
 def show_bar(counter):
-    import os
-    from PIL import Image
-    from PIL import Image
-    import matplotlib.pyplot as plt
-    import platform
-    if platform.system() == 'Darwin': #맥
-        plt.rc('font', family='AppleGothic') 
-    elif platform.system() == 'Windows': #윈도우
-        plt.rc('font', family='Malgun Gothic') 
-    elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
-        plt.rc('font', family='Malgun Gothic') 
-    plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
-    
+        
     if(os.path.isfile("imsiTemp\\막대.jpg")):
         image = Image.open("imsiTemp\\막대.jpg")
         image.show()
@@ -199,18 +193,6 @@ def search_brand():
 
 # 브랜드 파일 원그래프
 def brand_circle():
-    import os
-    from PIL import Image
-    import matplotlib.pyplot as plt
-    import platform
-    if platform.system() == 'Darwin': #맥
-            plt.rc('font', family='AppleGothic') 
-    elif platform.system() == 'Windows': #윈도우
-            plt.rc('font', family='Malgun Gothic') 
-    elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
-        plt.rc('font', family='Malgun Gothic') 
-        plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
-
     if(os.path.isfile("imsiTemp\\원그래프.jpg")):
         image = Image.open("imsiTemp\\원그래프.jpg")
         image.show()
