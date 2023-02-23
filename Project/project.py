@@ -135,7 +135,7 @@ def show_bar(counter):
         plt.xlabel("검색어")
         plt.ylabel("빈도수")
         plt.bar(labels[:20],values[:20],color=['r','g','b','purple','y'])
-        plt.savefig('막대.jpg')
+        plt.savefig('imsiTemp\\막대.jpg')
         plt.close(fig)
         image = Image.open("imsiTemp\\막대.jpg")
         image.show()
@@ -324,11 +324,3 @@ def mk_wordcloud(func,num):
             image.show()
     else:
         print("잘못된 인자값입니다. 1 2 중 선택해주세요.")
-# In[ ]:
-
-
-# 프로그램 실행 함수
-
-
-
-# %%

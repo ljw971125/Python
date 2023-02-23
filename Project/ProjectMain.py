@@ -68,4 +68,5 @@ while(True):
     #    e_munja[1]
     # print(e_munja[1])
     
+
 # %%
