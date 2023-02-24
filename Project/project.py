@@ -285,3 +285,4 @@ def mk_wordcloud(func,num):
             image.show()
     else:
         print("잘못된 인자값입니다. 1 2 중 선택해주세요.")
+# %%
