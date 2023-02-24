@@ -20,7 +20,7 @@ while(True):
     li4=["n","no","N","NO","No","아니오"]
     
     try:
-        in_num=int(input("보고싶은 메뉴의 번호를 입력하세요.\n"))
+        in_num=int(input("보고싶은 메뉴의 번호를 입력하세요.(종료:0)\n"))
 
         if(in_num==1):
             raise Exception('구현 미완성')
