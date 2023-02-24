@@ -1,37 +1,37 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-from collections import Counter #자료형(list, tuple, dict)들에게 확장된 기능을 주기 위해 제작된 파이썬의 내장 모듈
-import requests #특정 웹사이트에 HTTP 요청을 보내 HTML 문서를 받아올 수 있는 라이브러리
-from bs4 import BeautifulSoup #파이썬에서 사용할 수 있는 웹데이터 크롤링 라이브러리
-from selenium import webdriver #HTML 값들을 처리함에 있어 동적으로 변하는 웹 페이지의 데이터들까지 크롤링
+#%%
+from collections import Counter # 자료형(list, tuple, dict)들에게 확장된 기능을 주기 위해 제작된 파이썬의 내장 모듈
+import requests # 특정 웹사이트에 HTTP 요청을 보내 HTML 문서를 받아올 수 있는 라이브러리
+from bs4 import BeautifulSoup # 파이썬에서 사용할 수 있는 웹데이터 크롤링 라이브러리
+from selenium import webdriver # HTML 값들을 처리함에 있어 동적으로 변하는 웹 페이지의 데이터들까지 크롤링
 from selenium.webdriver.common.by import By 
-from time import sleep #sleep함수
-from collections import Counter #카운트
-from urllib.request import urlopen,Request #URL(Uniform Resource Locator)을 가져오기 위한 파이썬 모듈
-import matplotlib.pyplot as plt #데이터를 차트나 플롯(Plot)으로 그려주는 라이브러리 패키지
-import platform #시스템 정보를 확인할 때 사용하는 모듈
-from wordcloud import WordCloud #중요한 단어나 키워드를 시각화해서 보여주는 시각화 도구
-import numpy as np #NumPy(Numerical Python)는 파이썬의 고성능 수치계산을 위한 라이브러리
-from PIL import Image #이미지를 분석하고 처리하는 라이브러리
-import operator #파이썬에서 수행 가능한 연산을 효율적으로 처리할 수 있는 모듈
-import os #Operating System #운영체제에서 제공되는 여러 기능을 파이썬에서 수행할 수 있게 해주는 모듈
+from time import sleep # sleep함수
+from collections import Counter # 카운트
+from urllib.request import urlopen,Request # URL(Uniform Resource Locator)을 가져오기 위한 파이썬 모듈
+import matplotlib.pyplot as plt # 데이터를 차트나 플롯(Plot)으로 그려주는 라이브러리 패키지
+import platform # 시스템 정보를 확인할 때 사용하는 모듈
+from wordcloud import WordCloud # 중요한 단어나 키워드를 시각화해서 보여주는 시각화 도구
+import numpy as np # NumPy(Numerical Python)는 파이썬의 고성능 수치계산을 위한 라이브러리
+from PIL import Image # 이미지를 분석하고 처리하는 라이브러리
+import operator # 파이썬에서 수행 가능한 연산을 효율적으로 처리할 수 있는 모듈
+import os # os(Operating System) 운영체제에서 제공되는 여러 기능을 파이썬에서 수행할 수 있게 해주는 모듈
 import shutil # 폴더 안에 파일이 존재해서 삭제가 안되기 때문에 상관없이 삭제하기 위한 모듈
-
+#%%
 def hangul(): # 한글 깨짐 해결
-    if platform.system() == 'Darwin': #맥
+    if platform.system() == 'Darwin': # 맥
         plt.rc('font', family='AppleGothic') 
-    elif platform.system() == 'Windows': #윈도우
+    elif platform.system() == 'Windows': # 윈도우
         plt.rc('font', family='Malgun Gothic') 
-    elif platform.system() == 'Linux': #리눅스 (구글 콜랩)
+    elif platform.system() == 'Linux': # 리눅스 (구글 콜랩)
         plt.rc('font', family='Malgun Gothic') 
-    plt.rcParams['axes.unicode_minus'] = False #한글 폰트 사용시 마이너스 폰트 깨짐 해결
+    plt.rcParams['axes.unicode_minus'] = False # 한글 폰트 사용시 마이너스 폰트 깨짐 해결
 
 def createFolder(): # 폴더 생성
     try:
         if not os.path.exists('imsiTemp'): # 폴더이름:imsiTemp의 존재여부 : x
-            os.makedirs('imsiTemp')  # 'imsiTemp'디렉토리 생성
+            os.makedirs('imsiTemp') # 'imsiTemp'디렉토리 생성
     except OSError: # os에러
         print ('Error: Creating directory. ' +  'imsiTemp')
     
@@ -63,7 +63,7 @@ def file_to_counter():
     
     lis2=[] # 임시 저장용 리스트
     for i in lis: # 파일에서 읽어서 저장한 리스트를 읽기
-        lis2.append(i.split('\n')) #  \n 을 구분으로 임시 저장용 리스트에 저장
+        lis2.append(i.split('\n')) # \n 을 구분으로 임시 저장용 리스트에 저장
     lis.clear() # 리스트 클리어
     for i in lis2[0]: # 위의 split으로 2차원 배열이 되었음
         lis.append(i) # 비워둔 리스트에 붙이기
@@ -73,8 +73,7 @@ def file_to_counter():
     print()
     return cnt
        
-
-# 검색어 순위 데이터 20등 까지 수집하는 함수
+# 검색어 순위 데이터 20등 까지 보여주는 함수
 def get_ranklist():
     # 모듈 불러오기
     
@@ -92,9 +91,8 @@ def get_ranklist():
         li.append(f_text.a['title'])
     for i in range(20):
         li2.append(li[i])
-    print(li2)
     return li2
-
+get_ranklist()
 
 # 3일간 최대 많이 나온 검색어 상위 20
 def search_top(cnt):
@@ -212,7 +210,7 @@ def brand_circle():
         image = Image.open("imsiTemp\\원그래프.jpg")
         image.show()
     
-    # 워드클라우드 공통 함수화
+# 워드클라우드 공통 함수화
 def mk_wordcloud(func,num):
     if(num==1):
         if(os.path.isfile('imsiTemp\\워드클라우드1.jpg')):
