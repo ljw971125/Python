@@ -92,7 +92,6 @@ def get_ranklist():
     for i in range(20):
         li2.append(li[i])
     return li2
-get_ranklist()
 
 # 3일간 최대 많이 나온 검색어 상위 20
 def search_top(cnt):
