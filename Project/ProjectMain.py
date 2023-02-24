@@ -11,7 +11,7 @@ while(True):
     print("3) 검색어 순위 워드 클라우드") #완
     print("4) 검색어 순위 막대 그래프") # 완
     print("5) 상품 검색 후 브랜드 워드클라우드") #완
-    print("6) 상품 검색 후 브랜드 원 그래프") #완
+    print("6) 상품 검색 후 브랜드 원 그래프") #미완(파일 없을시 오류)
     print("7) ")
     print("8) ")
     print("9) ")
@@ -101,8 +101,6 @@ while(True):
             # 소수점을 입력했을때 오류 해결
             print('소숫점이 아닌 0~9를 입력해주세요.\n')
 
-    except Exception:
-        print("잘못된 입력입니다.")
-    
-
+    # except Exception:
+    #     print("잘못된 입력입니다.")
 # %%

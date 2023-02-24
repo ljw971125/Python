@@ -203,9 +203,9 @@ def brand_circle():
                 explode_value.append(0)
         
       
-        fig=plt.pie(high_value, labels=high_label, explode=explode_value, autopct='%.2f')
+        plt.pie(high_value, labels=high_label, explode=explode_value, autopct='%.2f')
         plt.savefig('imsiTemp\\원그래프.jpg')
-        plt.close(fig)
+        plt.close()
         image = Image.open("imsiTemp\\원그래프.jpg")
         image.show()
     
