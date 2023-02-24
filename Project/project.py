@@ -128,10 +128,18 @@ def show_bar(counter):
 # 상품 검색후 브랜드 카운팅
 def search_brand():
      # 상품명 입력
+    cnt=file_to_counter()
+    string_list=list(cnt.keys()) # 읽어온 카운터의 키값(상품명)을 리스트로 저장
+    int_list=list(cnt.values()) # 읽어온 카운터의 value값(빈도수)를 리스트로 저장
+    dic = { x:y for x,y in zip(string_list,int_list) } # 두 개의 리스트를 딕셔너리화 (중복제거 x)
+    sorted_by_value = sorted(dic.items(), key=operator.itemgetter(1), reverse=True)
+    li=[] # 빈리스트
+    for i in range(0,20):
+        li.append(sorted_by_value[i][0])
 
     while(True):
-        input_product = input('상품명을 입력해주세요.')
-        if  input_product in dict(file_to_counter()):
+        input_product = input('상품명을 입력해주세요{메뉴화면 돌아가기:y}.')
+        if  input_product in li:
             driver=webdriver.Chrome("C:\chromedriver\chromedriver.exe") #크롬드라이버
             driver.get("https://www.musinsa.com/app/") 
 
@@ -164,10 +172,11 @@ def search_brand():
 
             brand_counter = Counter(brand_li)
             return brand_counter
-            break
+        elif (input_product=='y'or input_product=='Y'):
+            return 1
         else:
-            print('데이터양이 충분한 검색어가 아닙니다.')
-            break
+            print('다시 입력해주세요.')
+
 
 
 # 브랜드 파일 원그래프
@@ -248,41 +257,44 @@ def mk_wordcloud(func,num):
             image=Image.open('imsiTemp\\워드클라우드1.jpg')
             image.show()
     elif(num==2):
-        if(os.path.isfile('imsiTemp\\워드클라우드2.jpg')):
-            image=Image.open('imsiTemp\\워드클라우드2.jpg')
-            image.show()
+        if (func==1):
+            print('메뉴화면 이동')
         else:
-            labels=list(func.keys())
-            values=list(func.values())
-            high_value2 = [] 
-            high_label2 = []
+            if(os.path.isfile('imsiTemp\\워드클라우드2.jpg')):
+                image=Image.open('imsiTemp\\워드클라우드2.jpg')
+                image.show()
+            else:
+                labels=list(func.keys())
+                values=list(func.values())
+                high_value2 = [] 
+                high_label2 = []
 
-            for i in range(len(labels)):
-                if(values[i] >= 5):
-                    high_value2.append(values[i])
-                    high_label2.append(labels[i])
+                for i in range(len(labels)):
+                    if(values[i] >= 5):
+                        high_value2.append(values[i])
+                        high_label2.append(labels[i])
 
-            high_dic = dict(zip(high_label2,high_value2))
+                high_dic = dict(zip(high_label2,high_value2))
 
-            t_mask = np.array(Image.open('t5_2.jpg'))
+                t_mask = np.array(Image.open('t5_2.jpg'))
 
-            fontpath='C:\\Windows\\Fonts\\NGULIM.TTF'
+                fontpath='C:\\Windows\\Fonts\\NGULIM.TTF'
 
-            wc = WordCloud(
-                background_color='white',
-                relative_scaling=0.2, 
-                mask=t_mask, stopwords=['counter'], 
-                colormap ="Greens",
-                font_path = fontpath
-            ).generate(str(high_dic))
+                wc = WordCloud(
+                    background_color='white',
+                    relative_scaling=0.2, 
+                    mask=t_mask, stopwords=['counter'], 
+                    colormap ="Greens",
+                    font_path = fontpath
+                ).generate(str(high_dic))
 
-            plt.figure(figsize=(8,8))
-            plt.imshow(wc, interpolation='bilinear')
-            plt.axis('off')
-            plt.savefig('imsiTemp\\워드클라우드2.jpg')
-            plt.close()
-            image=Image.open('imsiTemp\\워드클라우드2.jpg')
-            image.show()
+                plt.figure(figsize=(8,8))
+                plt.imshow(wc, interpolation='bilinear')
+                plt.axis('off')
+                plt.savefig('imsiTemp\\워드클라우드2.jpg')
+                plt.close()
+                image=Image.open('imsiTemp\\워드클라우드2.jpg')
+                image.show()
     else:
         print("잘못된 인자값입니다. 1 2 중 선택해주세요.")
 # %%

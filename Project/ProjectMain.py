@@ -11,16 +11,14 @@ while(True):
     print("3) 검색어 순위 워드 클라우드") #완
     print("4) 검색어 순위 막대 그래프") # 완
     print("5) 상품 검색 후 브랜드 워드클라우드") #완
-    print("6) 상품 검색 후 브랜드 원 그래프") #미완(파일 없을시 오류)
-    print("7) ")
-    print("8) ")
-    print("9) ")
+    print("6) 상품 검색 후 브랜드 원 그래프") #완
     print("0) 종료\n")
 
     createFolder() # 폴더 자동생성
     hangul()
     li3=["y","yes","Y","YES","Yes","예","네"]
     li4=["n","no","N","NO","No","아니오"]
+    
     try:
         in_num=int(input("보고싶은 메뉴의 번호를 입력하세요.\n"))
 
@@ -46,29 +44,19 @@ while(True):
         # 상품 검색 후 브랜드 원 그래프
         elif(in_num==6):
             brand_circle()
-
-        elif(in_num==7):
-            print('7번 실행')
-
-        elif(in_num==8):
-            print('8번 실행')
-
-        elif(in_num==9):
-            raise Exception('구현 미완성')
-        
+   
         elif(in_num==0):
             deleteFolder()
             print('프로그램을 종료합니다.')
             break
-
         else:
             print("올바르지 않은 입력입니다.")
+
     except ValueError as value_e: # 에러를 value_e 객체로 변환
         e_list=[] # 에러 출력문 리스트
         e_list.append(str(value_e).split())
         e_munja = e_list[0][-1].split("'")
         
-
         if e_munja[1] == '' :
             # 스페이스바 일때
             print('공백입니다.\n')
@@ -101,6 +89,6 @@ while(True):
             # 소수점을 입력했을때 오류 해결
             print('소숫점이 아닌 0~9를 입력해주세요.\n')
 
-    # except Exception:
-    #     print("잘못된 입력입니다.")
+    except Exception:
+        print("잘못된 입력입니다.")
 # %%
